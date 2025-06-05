@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CTIAL Application Form - WhatsApp Integration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0061FF;
+            --primary-dark: #004ECC;
+            --primary-light: #E6F0FF;
+            --secondary: #FF6B00;
+            --dark: #2F323D;
+            --gray-dark: #5A6A78;
+            --gray-medium: #A3B1C0;
+            --gray-light: #F4F8FA;
+            --white: #FFFFFF;
+            --success: #1ABC9C;
+            --error: #E74C3C;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.16);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --whatsapp: #25D366;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--gray-light);
+            color: var(--dark);
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 24px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .form-container {
+            background-color: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+            max-width: 800px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .form-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            padding: 32px 40px;
+            text-align: center;
+        }
+
+        .form-header h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .form-header p {
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        .form-progress {
+            height: 6px;
+            background-color: var(--gray-light);
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 20%;
+            background: linear-gradient(90deg, var(--secondary) 0%, #FF8C00 100%);
+            transition: width 0.6s ease;
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            padding: 16px 40px;
+            background-color: var(--white);
+        }
+
+        .step-indicator {
+            position: relative;
+            text-align: center;
+            flex: 1;
+        }
+
+        .step-indicator:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 12px;
+            left: calc(50% + 16px);
+            width: calc(100% - 32px);
+            height: 2px;
+            background-color: var(--gray-medium);
+            z-index: 1;
+        }
+
+        .step-number {
+            width: 24px;
+            height: 24px;
+            background-color: var(--gray-medium);
+            color: var(--white);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 2;
+            transition: var(--transition);
+        }
+
+        .step-label {
+            font-size: 12px;
+            color: var(--gray-medium);
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .step-indicator.active .step-number {
+            background-color: var(--secondary);
+            transform: scale(1.1);
+        }
+
+        .step-indicator.active .step-label {
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        .step-indicator.completed .step-number {
+            background-color: var(--success);
+        }
+
+        .step-indicator.completed::after {
+            background-color: var(--success);
+        }
+
+        .form-content {
+            padding: 40px;
+        }
+
+        .form-step {
+            display: none;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-step.active {
+            display: block;
+        }
+
+        .form-step h3 {
+            font-size: 20px;
+            color: var(--primary);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-step h3 i {
+            font-size: 22px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+            font-size: 14px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--gray-medium);
+            border-radius: var(--radius-sm);
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            transition: var(--transition);
+            background-color: var(--white);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+            outline: none;
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .error-message {
+            color: var(--error);
+            font-size: 13px;
+            margin-top: 6px;
+            display: none;
+        }
+
+        .form-control.invalid {
+            border-color: var(--error);
+        }
+
+        .form-control.invalid:focus {
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+            margin-top: 3px;
+            flex-shrink: 0;
+        }
+
+        .checkbox-group label {
+            font-weight: 400;
+            color: var(--gray-dark);
+            margin-bottom: 0;
+        }
+
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 32px;
+            gap: 16px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 24px;
+            border-radius: var(--radius-sm);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--white);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background-color: var(--white);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--primary-light);
+        }
+
+        .btn-success {
+            background-color: var(--success);
+            color: var(--white);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-success:hover {
+            opacity: 0.9;
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .btn-whatsapp {
+            background-color: var(--whatsapp);
+            color: var(--white);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-whatsapp:hover {
+            background-color: #128C7E;
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--gray-dark);
+            border: 1px solid var(--gray-medium);
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+        }
+
+        .confirmation-message {
+            text-align: center;
+            padding: 40px;
+            display: none;
+        }
+
+        .confirmation-message i {
+            font-size: 48px;
+            color: var(--success);
+            margin-bottom: 20px;
+        }
+
+        .confirmation-message h3 {
+            font-size: 24px;
+            color: var(--dark);
+            margin-bottom: 12px;
+        }
+
+        .confirmation-message p {
+            color: var(--gray-dark);
+            margin-bottom: 24px;
+        }
+
+        .confirmation-message .btn {
+            margin: 0 auto;
+        }
+
+        .whatsapp-instructions {
+            background-color: #f0f9ff;
+            border-radius: var(--radius-sm);
+            padding: 20px;
+            margin-top: 20px;
+            border-left: 4px solid var(--whatsapp);
+        }
+
+        .whatsapp-instructions h4 {
+            margin-bottom: 10px;
+            color: var(--whatsapp);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .whatsapp-instructions ol {
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+
+        .whatsapp-instructions li {
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .form-header {
+                padding: 24px;
+            }
+            
+            .form-header h2 {
+                font-size: 24px;
+            }
+            
+            .form-content {
+                padding: 24px;
+            }
+            
+            .progress-steps {
+                padding: 16px 24px;
+            }
+            
+            .step-label {
+                display: none;
+            }
+            
+            .form-navigation {
+                flex-direction: column-reverse;
+            }
+            
+            .btn-group {
+                width: 100%;
+            }
+            
+            .btn {
+                flex: 1;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .form-header {
+                padding: 20px 16px;
+            }
+            
+            .form-content {
+                padding: 20px 16px;
+            }
+            
+            .form-step h3 {
+                font-size: 18px;
+            }
+            
+            .form-control {
+                padding: 12px 14px;
+            }
+        }
+        
+        /* --- Circular Loading Animation --- */
+        #loader-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--gray-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity 0.5s ease-out;
+        }
+
+        #loader-wrapper.loaded {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .circular-loader {
+            width: 60px;
+            height: 60px;
+            border: 6px solid rgba(47, 50, 61, 0.15);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(120deg); }
+            50% { transform: rotate(240deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+  
+    <div id="loader-wrapper">
+        <div class="circular-loader"></div>
+    </div>
+ 
+    <div class="form-container">
+        <div class="form-header">
+            <h2>Join Our Caregiving Program</h2>
+            <p>Complete your application in just a few simple steps</p>
+        </div>
+        
+        <div class="form-progress">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        
+        <div class="progress-steps">
+            <div class="step-indicator active" data-step="1">
+                <div class="step-number">1</div>
+                <div class="step-label">Personal Info</div>
+            </div>
+            <div class="step-indicator" data-step="2">
+                <div class="step-number">2</div>
+                <div class="step-label">Education</div>
+            </div>
+            <div class="step-indicator" data-step="3">
+                <div class="step-number">3</div>
+                <div class="step-label">Experience</div>
+            </div>
+            <div class="step-indicator" data-step="4">
+                <div class="step-number">4</div>
+                <div class="step-label">Motivation</div>
+            </div>
+            <div class="step-indicator" data-step="5">
+                <div class="step-number">5</div>
+                <div class="step-label">Review</div>
+            </div>
+        </div>
+        
+        <div class="form-content">
+            <form id="multiStepForm">
+                <!-- Step 1 -->
+                <div class="form-step active" data-step="1">
+                    <h3><i class="fas fa-user-circle"></i> Personal Information</h3>
+                    
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" name="fullName" class="form-control" placeholder="Enter your full name" required>
+                        <div class="error-message" id="fullNameError">Please enter your full name</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" class="form-control" placeholder="your@email.com" required>
+                        <div class="error-message" id="emailError">Please enter a valid email address</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" class="form-control" placeholder="+234 800 000 0000" required>
+                        <div class="error-message" id="phoneError">Please enter a valid phone number</div>
+                    </div>
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="form-step" data-step="2">
+                    <h3><i class="fas fa-graduation-cap"></i> Educational Background</h3>
+                    
+                    <div class="form-group">
+                        <label for="highestQualification">Highest Qualification</label>
+                        <input type="text" id="highestQualification" name="highestQualification" class="form-control" placeholder="e.g., SSCE, BSc, HND" required>
+                        <div class="error-message" id="highestQualificationError">Please enter your highest qualification</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="institution">Institution Attended</label>
+                        <input type="text" id="institution" name="institution" class="form-control" placeholder="Name of your school/institution" required>
+                        <div class="error-message" id="institutionError">Please enter the institution name</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="yearGraduated">Year Graduated</label>
+                        <input type="text" id="yearGraduated" name="yearGraduated" class="form-control" placeholder="e.g., 2020" pattern="[0-9]{4}" required>
+                        <div class="error-message" id="yearGraduatedError">Please enter a valid 4-digit year</div>
+                    </div>
+                </div>
+                
+                <!-- Step 3 -->
+                <div class="form-step" data-step="3">
+                    <h3><i class="fas fa-hands-helping"></i> Caregiving Experience</h3>
+                    
+                    <div class="form-group">
+                        <label for="experienceYears">Years of Experience</label>
+                        <input type="number" id="experienceYears" name="experienceYears" class="form-control" placeholder="Number of years" min="0" required>
+                        <div class="error-message" id="experienceYearsError">Please enter a valid number</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="relevantSkills">Relevant Skills</label>
+                        <textarea id="relevantSkills" name="relevantSkills" class="form-control" placeholder="List your caregiving skills (e.g., First Aid, Elderly Care, CPR)" required></textarea>
+                        <div class="error-message" id="relevantSkillsError">Please list your relevant skills</div>
+                    </div>
+                </div>
+                
+                <!-- Step 4 -->
+                <div class="form-step" data-step="4">
+                    <h3><i class="fas fa-lightbulb"></i> Your Motivation</h3>
+                    
+                    <div class="form-group">
+                        <label for="motivation">Why do you want to become a caregiver?</label>
+                        <textarea id="motivation" name="motivation" class="form-control" placeholder="Share your reasons and passion for caregiving..." required></textarea>
+                        <div class="error-message" id="motivationError">Please share your motivation</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="availability">Availability</label>
+                        <input type="text" id="availability" name="availability" class="form-control" placeholder="e.g., Full-time, Part-time, Weekends" required>
+                        <div class="error-message" id="availabilityError">Please indicate your availability</div>
+                    </div>
+                </div>
+                
+                <!-- Step 5 -->
+                <div class="form-step" data-step="5">
+                    <h3><i class="fas fa-check-circle"></i> Review & Submit</h3>
+                    
+                    <div class="form-group">
+                        <div style="background-color: var(--gray-light); padding: 20px; border-radius: var(--radius-sm); margin-bottom: 24px;">
+                            <h4 style="margin-bottom: 16px; color: var(--primary);">Application Summary</h4>
+                            <div id="summaryContent" style="color: var(--gray-dark); line-height: 1.8;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="consent" name="consent" required>
+                            <label for="consent">I certify that all information provided is accurate and complete. I agree to the <a href="#" style="color: var(--primary);">terms and conditions</a>.</label>
+                        </div>
+                        <div class="error-message" id="consentError">You must agree to continue</div>
+                    </div>
+                    
+                    <div class="whatsapp-instructions">
+                        <h4><i class="fab fa-whatsapp"></i> WhatsApp Submission</h4>
+                        <p>After clicking "Submit Application", we'll open WhatsApp with your application details pre-filled. Simply press send to complete your application.</p>
+                        <ol>
+                            <li>Ensure you have WhatsApp installed on your device</li>
+                            <li>Your application will be sent to CTIAL support</li>
+                            <li>Our team will contact you within 24 hours</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <!-- Navigation -->
+                <div class="form-navigation">
+                    <button type="button" id="prevBtn" class="btn btn-outline" disabled>
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <div class="btn-group">
+                        <button type="button" id="saveBtn" class="btn btn-secondary">
+                            <i class="fas fa-save"></i> Save Draft
+                        </button>
+                        <button type="button" id="nextBtn" class="btn btn-primary">
+                            Continue <i class="fas fa-arrow-right"></i>
+                        </button>
+                        <button type="submit" id="submitBtn" class="btn btn-whatsapp" style="display: none;">
+                            <i class="fab fa-whatsapp"></i> Submit via WhatsApp
+                        </button>
+                    </div>
+                </div>
+            </form>
+            
+            <!-- Confirmation Message -->
+            <div class="confirmation-message" id="confirmationMessage">
+                <i class="fab fa-whatsapp"></i>
+                <h3>Application Ready to Send!</h3>
+                <p>We've prepared your application to be sent via WhatsApp. If the WhatsApp window didn't open automatically:</p>
+                <div class="btn-group">
+                    <button class="btn btn-whatsapp" id="openWhatsAppBtn">
+                        <i class="fab fa-whatsapp"></i> Open WhatsApp
+                    </button>
+                    <button class="btn btn-outline" onclick="window.location.reload()">
+                        <i class="fas fa-edit"></i> Edit Again
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('multiStepForm');
+            const formSteps = document.querySelectorAll('.form-step');
+            const stepIndicators = document.querySelectorAll('.step-indicator');
+            const progressBar = document.getElementById('progressBar');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const saveBtn = document.getElementById('saveBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            const confirmationMessage = document.getElementById('confirmationMessage');
+            const summaryContent = document.getElementById('summaryContent');
+            const openWhatsAppBtn = document.getElementById('openWhatsAppBtn');
+            
+            let currentStep = 0;
+            let formData = {};
+            let whatsappUrl = "";
+            
+            // Your WhatsApp number
+            const whatsappNumber = "+2349164712004";
+            
+            // Initialize form
+            updateFormState();
+            
+            // Update form state (progress, buttons, etc.)
+            function updateFormState() {
+                // Update progress bar
+                const progress = ((currentStep + 1) / formSteps.length) * 100;
+                progressBar.style.width = `${progress}%`;
+                
+                // Update step indicators
+                stepIndicators.forEach((indicator, index) => {
+                    indicator.classList.remove('active', 'completed');
+                    
+                    if (index < currentStep) {
+                        indicator.classList.add('completed');
+                    } else if (index === currentStep) {
+                        indicator.classList.add('active');
+                    }
+                });
+                
+                // Update navigation buttons
+                prevBtn.disabled = currentStep === 0;
+                nextBtn.style.display = currentStep === formSteps.length - 1 ? 'none' : 'flex';
+                submitBtn.style.display = currentStep === formSteps.length - 1 ? 'flex' : 'none';
+                saveBtn.style.display = currentStep === formSteps.length - 1 ? 'none' : 'flex';
+                
+                // Generate summary on review step
+                if (currentStep === formSteps.length - 1) {
+                    generateSummary();
+                }
+            }
+            
+            // Generate application summary
+            function generateSummary() {
+                const tempFormData = new FormData(form);
+                let summaryHTML = '';
+                
+                // Personal Info
+                summaryHTML += `<p><strong>Name:</strong> ${tempFormData.get('fullName')}</p>`;
+                summaryHTML += `<p><strong>Email:</strong> ${tempFormData.get('email')}</p>`;
+                summaryHTML += `<p><strong>Phone:</strong> ${tempFormData.get('phone')}</p><br>`;
+                
+                // Education
+                summaryHTML += `<p><strong>Highest Qualification:</strong> ${tempFormData.get('highestQualification')}</p>`;
+                summaryHTML += `<p><strong>Institution:</strong> ${tempFormData.get('institution')}</p>`;
+                summaryHTML += `<p><strong>Year Graduated:</strong> ${tempFormData.get('yearGraduated')}</p><br>`;
+                
+                // Experience
+                summaryHTML += `<p><strong>Years of Experience:</strong> ${tempFormData.get('experienceYears')}</p>`;
+                summaryHTML += `<p><strong>Relevant Skills:</strong> ${tempFormData.get('relevantSkills')}</p><br>`;
+                
+                // Motivation
+                summaryHTML += `<p><strong>Motivation:</strong> ${tempFormData.get('motivation')}</p>`;
+                summaryHTML += `<p><strong>Availability:</strong> ${tempFormData.get('availability')}</p>`;
+                
+                summaryContent.innerHTML = summaryHTML;
+            }
+            
+            // Validate current step
+            function validateStep() {
+                const currentStepEl = formSteps[currentStep];
+                const inputs = currentStepEl.querySelectorAll('input[required], textarea[required]');
+                let isValid = true;
+                
+                inputs.forEach(input => {
+                    const errorElement = document.getElementById(`${input.id}Error`);
+                    
+                    // Clear previous errors
+                    input.classList.remove('invalid');
+                    if (errorElement) errorElement.style.display = 'none';
+                    
+                    // Check validation
+                    if (input.type === 'checkbox' && !input.checked) {
+                        isValid = false;
+                        if (errorElement) errorElement.style.display = 'block';
+                        input.classList.add('invalid');
+                    } 
+                    else if (input.value.trim() === '') {
+                        isValid = false;
+                        if (errorElement) errorElement.style.display = 'block';
+                        input.classList.add('invalid');
+                    }
+                    else if (input.type === 'email' && !/^\S+@\S+\.\S+$/.test(input.value)) {
+                        isValid = false;
+                        if (errorElement) {
+                            errorElement.textContent = 'Please enter a valid email address';
+                            errorElement.style.display = 'block';
+                        }
+                        input.classList.add('invalid');
+                    }
+                    else if (input.id === 'phone' && !/^(\+?234|0)[789]\d{9}$/.test(input.value.replace(/\s+/g, ''))) {
+                        isValid = false;
+                        if (errorElement) {
+                            errorElement.textContent = 'Please enter a valid Nigerian phone number';
+                            errorElement.style.display = 'block';
+                        }
+                        input.classList.add('invalid');
+                    }
+                    else if (input.id === 'yearGraduated' && !/^\d{4}$/.test(input.value)) {
+                        isValid = false;
+                        if (errorElement) {
+                            errorElement.textContent = 'Please enter a valid 4-digit year';
+                            errorElement.style.display = 'block';
+                        }
+                        input.classList.add('invalid');
+                    }
+                });
+                
+                return isValid;
+            }
+            
+            // Go to next step
+            function nextStep() {
+                if (validateStep()) {
+                    formSteps[currentStep].classList.remove('active');
+                    currentStep++;
+                    formSteps[currentStep].classList.add('active');
+                    updateFormState();
+                    
+                    // Scroll to top of form
+                    formSteps[currentStep].scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+            
+            // Go to previous step
+            function prevStep() {
+                formSteps[currentStep].classList.remove('active');
+                currentStep--;
+                formSteps[currentStep].classList.add('active');
+                updateFormState();
+                
+                // Scroll to top of form
+                formSteps[currentStep].scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+            
+            // Save draft
+            function saveDraft() {
+                const tempFormData = new FormData(form);
+                const data = {};
+                
+                for (const [key, value] of tempFormData.entries()) {
+                    data[key] = value;
+                }
+                
+                // In a real app, you would send this to your backend
+                console.log('Draft saved:', data);
+                
+                // Show feedback to user
+                const originalText = saveBtn.innerHTML;
+                saveBtn.innerHTML = '<i class="fas fa-check"></i> Saved!';
+                saveBtn.style.backgroundColor = 'var(--success)';
+                
+                setTimeout(() => {
+                    saveBtn.innerHTML = originalText;
+                    saveBtn.style.backgroundColor = '';
+                }, 2000);
+            }
+            
+            // Create WhatsApp URL
+            function createWhatsAppUrl(data) {
+                // Construct the message
+                const message = `*New Caregiver Application*\n\n` +
+                    `*Name:* ${data.fullName}\n` +
+                    `*Email:* ${data.email}\n` +
+                    `*Phone:* ${data.phone}\n` +
+                    `*Highest Qualification:* ${data.highestQualification}\n` +
+                    `*Institution:* ${data.institution} (${data.yearGraduated})\n` +
+                    `*Experience:* ${data.experienceYears} years\n` +
+                    `*Skills:* ${data.relevantSkills}\n` +
+                    `*Motivation:* ${data.motivation}\n` +
+                    `*Availability:* ${data.availability}\n\n` +
+                    `_Submitted via CTIAL Application Form_`;
+                
+                // Encode message for URL
+                const encodedMessage = encodeURIComponent(message);
+                
+                // Create WhatsApp URL with your fixed number
+                return `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+            }
+            
+            // Submit form
+            async function submitForm(e) {
+                e.preventDefault();
+                
+                if (validateStep()) {
+                    const tempFormData = new FormData(form);
+                    formData = {};
+                    
+                    for (const [key, value] of tempFormData.entries()) {
+                        formData[key] = value;
+                    }
+                    
+                    // Create WhatsApp URL
+                    whatsappUrl = createWhatsAppUrl(formData);
+                    
+                    // Simulate API call
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Preparing...';
+                    
+                    try {
+                        await new Promise(resolve => setTimeout(resolve, 1500));
+                        
+                        // Show success message
+                        form.style.display = 'none';
+                        confirmationMessage.style.display = 'block';
+                        
+                        // Set WhatsApp button URL
+                        openWhatsAppBtn.onclick = function() {
+                            window.open(whatsappUrl, '_blank');
+                        };
+                        
+                        // Try to open WhatsApp automatically
+                        window.open(whatsappUrl, '_blank');
+                        
+                    } catch (error) {
+                        console.error('Submission error:', error);
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<i class="fab fa-whatsapp"></i> Submit via WhatsApp';
+                        alert('There was an error submitting your application. Please try again.');
+                    }
+                }
+            }
+            
+            // Event listeners
+            nextBtn.addEventListener('click', nextStep);
+            prevBtn.addEventListener('click', prevStep);
+            saveBtn.addEventListener('click', saveDraft);
+            form.addEventListener('submit', submitForm);
+            
+            // Real-time validation for fields
+            form.querySelectorAll('input, textarea').forEach(input => {
+                input.addEventListener('input', function() {
+                    if (this.checkValidity()) {
+                        this.classList.remove('invalid');
+                        const errorElement = document.getElementById(`${this.id}Error`);
+                        if (errorElement) errorElement.style.display = 'none';
+                    }
+                });
+                
+                input.addEventListener('blur', function() {
+                    if (!this.checkValidity()) {
+                        this.classList.add('invalid');
+                        const errorElement = document.getElementById(`${this.id}Error`);
+                        if (errorElement) errorElement.style.display = 'block';
+                    }
+                });
+            });
+        });
+        
+        // --- Loading Animation Hiding ---
+        window.addEventListener('load', () => {
+            const loaderWrapper = document.getElementById('loader-wrapper');
+            if (loaderWrapper) {
+                loaderWrapper.classList.add('loaded');
+                setTimeout(() => {
+                    if (loaderWrapper.parentNode) {
+                        loaderWrapper.parentNode.removeChild(loaderWrapper);
+                    }
+                }, 600);
+            }
+        });
+    </script>
+</body>
+</html>
