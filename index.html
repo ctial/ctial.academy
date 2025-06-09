@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CTIAL Caregiving Training and Internship Academy ltd</title>
+    <title>CGTIA Caregiving Training and Internship Academy ltd</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
@@ -400,26 +400,33 @@
             -webkit-backdrop-filter: blur(12px);
         }
 
+        .stat-value-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
         .stat-number {
             font-size: 4em; /* Larger numbers */
             font-weight: 700;
             background: var(--gradient-blue); /* Gradient for numbers */
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 8px;
             display: inline-block; /* For proper text-fill-color */
             line-height: 1; /* Tighter line height */
         }
+
         .stat-suffix {
-            font-size: 0.7em; /* Suffix smaller */
+            font-size: 2em; /* Increased size for visibility */
             font-weight: 700;
             background: var(--gradient-blue);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            vertical-align: super; /* Position suffix higher */
-            margin-left: 2px;
+            margin-left: 4px;
+            line-height: 1.6; /* Adjusts vertical position */
         }
-
 
         .stat-description {
             font-size: 1.2em; /* Larger, more readable description */
@@ -717,6 +724,9 @@
             .stat-number {
                 font-size: 3.5em;
             }
+            .stat-suffix {
+                font-size: 1.8em;
+            }
             .stat-description {
                 font-size: 1.1em;
             }
@@ -887,6 +897,9 @@
             .stat-number {
                 font-size: 3.2em;
             }
+             .stat-suffix {
+                font-size: 1.6em;
+            }
             .stat-description {
                 font-size: 1em;
             }
@@ -977,12 +990,12 @@
 
 
     <header class="header">
-        <a href="#" class="logo">CTIAL</a>
+        <a href="#" class="logo">CGTIA</a>
         <nav>
             <ul class="nav-menu" id="navMenu">
                 <li><a href="index.html" class="active">Home</a></li>
                 <li><a href="about.html">About Us</a></li>
-                <li><a href="programs.html">Programs</a></li>
+                <li><a href="program.html">Programs</a></li>
                 <li><a href="contact.html">Contact Us</a></li>
                 <li><a href="gallery.html">Gallery</a></li>
                 <li><a href="faq.html">FAQ</a></li>
@@ -995,7 +1008,7 @@
 
     <div class="hero">
         <div class="hero-content">
-            <h1 class="animated fade-in-up">Welcome to CTIAL Caregiving Training and Internship Academy ltd</h1>
+            <h1 class="animated fade-in-up">Welcome to CGTIA Caregiving Training and Internship Academy ltd</h1>
             <p class="animated fade-in-up">Empowering individuals with the skills and compassion to excel in caregiving and transform lives.</p>
             <a href="application_form.html" class="enroll-button animated fade-in-up">Enroll Now <i class="fas fa-arrow-right"></i></a>
         </div>
@@ -1017,7 +1030,7 @@
     </div>
 
     <div class="about-section" id="about-section">
-        <h2 class="section-heading animated fade-in-up">Why Choose CTIAL?</h2>
+        <h2 class="section-heading animated fade-in-up">Why Choose CGTIA?</h2>
         <div class="about-cards-container">
             <div class="about-card animated scale-in">
                 <i class="fas fa-book-open card-icon"></i>
@@ -1046,19 +1059,27 @@
         <h2 class="section-heading animated fade-in-up">Our Achievements</h2>
         <div class="stats-grid">
             <div class="stat-item animated scale-in">
-                <span class="stat-number" data-target="70">0</span><span class="stat-suffix">+</span>
+                <div class="stat-value-container">
+                    <span class="stat-number" data-target="70">0</span><span class="stat-suffix">+</span>
+                </div>
                 <p class="stat-description">Graduates</p>
             </div>
             <div class="stat-item animated scale-in">
-                <span class="stat-number" data-target="4">0</span><span class="stat-suffix">+</span>
+                <div class="stat-value-container">
+                    <span class="stat-number" data-target="4">0</span><span class="stat-suffix">+</span>
+                </div>
                 <p class="stat-description">Expert Tutors</p>
             </div>
             <div class="stat-item animated scale-in">
-                <span class="stat-number" data-target="100">0</span><span class="stat-suffix">%</span>
+                <div class="stat-value-container">
+                    <span class="stat-number" data-target="100">0</span><span class="stat-suffix">%</span>
+                </div>
                 <p class="stat-description">Affordable</p>
             </div>
             <div class="stat-item animated scale-in">
-                <span class="stat-number" data-target="120">0</span><span class="stat-suffix">%</span>
+                <div class="stat-value-container">
+                    <span class="stat-number" data-target="120">0</span><span class="stat-suffix">%</span>
+                </div>
                 <p class="stat-description">Globally Recognized</p>
             </div>
         </div>
@@ -1068,7 +1089,7 @@
         <h2 class="section-heading animated fade-in-up">What Our Students Say</h2>
         <div class="testimonials-grid">
             <div class="testimonial-card animated scale-in">
-                <p class="testimonial-quote">"CTIAL transformed my life. The hands-on training and dedicated instructors made me feel confident and ready to make a real difference in caregiving."</p>
+                <p class="testimonial-quote">"CGTIA transformed my life. The hands-on training and dedicated instructors made me feel confident and ready to make a real difference in caregiving."</p>
                 <div class="testimonial-author">
                     <img src="https://via.placeholder.com/70/0061FF/FFFFFF?text=A1" alt="Student Avatar 1" class="testimonial-avatar">
                     <div class="author-info">
@@ -1088,7 +1109,7 @@
                 </div>
             </div>
             <div class="testimonial-card animated scale-in">
-                <p class="testimonial-quote">"I appreciate the global recognition of CTIAL's Higher Diploma. It truly opened doors for me internationally. Highly recommend for serious caregivers."</p>
+                <p class="testimonial-quote">"I appreciate the global recognition of CGTIA's Higher Diploma. It truly opened doors for me internationally. Highly recommend for serious caregivers."</p>
                 <div class="testimonial-author">
                     <img src="https://via.placeholder.com/70/0061FF/FFFFFF?text=A3" alt="Student Avatar 3" class="testimonial-avatar">
                     <div class="author-info">
@@ -1127,6 +1148,21 @@
     <div class="programs-section" id="programs-section">
         <h2 class="section-heading animated fade-in-up">Our Programs and Pricing</h2>
         <div class="program-cards-container">
+            <div class="program-card animated scale-in">
+                <i class="fas fa-file-signature card-icon"></i>
+                <h4>Mandatory Registration</h4>
+                <p>This is a one-time, compulsory fee required for all program applicants. It is the first payment to be made.</p>
+                <div class="program-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Applicable:</span>
+                        <span class="detail-value">All Programs</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Registration Fee:</span>
+                        <span class="detail-value">₦50,000</span>
+                    </div>
+                </div>
+            </div>
             <div class="program-card animated scale-in">
                 <i class="fas fa-certificate card-icon"></i>
                 <h4>Certificate Program</h4>
@@ -1192,7 +1228,7 @@
 
     <footer class="footer">
         <div class="footer-column">
-            <h3>CTIAL Academy</h3>
+            <h3>CGTIA Academy</h3>
             <p>Empowering individuals with the skills and compassion to excel in caregiving worldwide.</p>
             <div class="social-links">
                 <a href="#"><i class="fab fa-facebook-f"></i></a>
@@ -1215,7 +1251,7 @@
             <h3>Contact Us</h3>
             <p><i class="fas fa-map-marker-alt"></i> suite 2 littlewood bishops court off Christina hospital road by christina junction egbu owerri imostate </p>
             <p><i class="fas fa-phone"></i> +234 801 234 5678</p>
-            <p><i class="fas fa-envelope"></i> info@ctial.edu</p>
+            <p><i class="fas fa-envelope"></i> info@cgtia.edu</p>
             <p><i class="fas fa-clock"></i> Mon-Fri: 9:00 AM - 5:00 PM</p>
         </div>
         <div class="footer-column">
@@ -1223,7 +1259,7 @@
             <p>Fully accredited and recognized by national and international caregiving bodies, ensuring top-tier training.</p>
             </div>
         <div class="footer-bottom">
-            <p>&copy; 2025 CTIAL Caregiving Training and Internship Academy ltd. All rights reserved.</p>
+            <p>&copy; 2025 CGTIA Caregiving Training and Internship Academy ltd. All rights reserved.</p>
         </div>
     </footer>
 
